@@ -4,9 +4,9 @@ import DoneButton from "./buttons/TaskFinished";
 const TodoItems = (props) => {
   return (
     <div>
-      <ul class="list-group">
+      <ul class="list-group" taskId={props.task.id}>
         <li class="list-group-item">{props.task.name}</li>
-        <DoneButton taskId={props.task.id} finishId={props.finish.id} />
+        <DoneButton task={props.task} />
         <DeleteButton taskId={props.task.id} />
       </ul>
     </div>
@@ -14,3 +14,4 @@ const TodoItems = (props) => {
 };
 
 export default observer(TodoItems);
+// finishId={props.finish.id}

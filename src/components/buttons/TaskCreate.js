@@ -1,7 +1,7 @@
 import todoStore from "../../stores/todoStore";
 import { useState } from "react";
 const TaskCreate = () => {
-  const [task, setTask] = useState({ name: "" });
+  const [task, setTask] = useState({ name: "", finished: false });
   const handleChange = (event) => {
     setTask({ ...task, [event.target.name]: event.target.value });
   };

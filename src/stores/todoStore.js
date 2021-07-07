@@ -1,28 +1,41 @@
 import { makeAutoObservable } from "mobx";
-
+import axios from "axios";
 class TodoStore {
   tasks = [];
-  finished = [];
 
   constructor() {
     makeAutoObservable(this);
   }
+  fetchTasks = async () => {
+    try {
+      const res = await axios.get("http://localhost:7000");
+      this.tasks = res.data;
+    } catch (error) {
+      console.error("fetchTasks:", error);
+    }
+  };
 
-  taskCreate = (task, finish) => {
-    this.tasks.push(task);
-    task.id = this.tasks.length + 1;
+  taskCreate = async (newTask) => {
+    try {
+      const response = await axios.post("http://localhost:7000", newTask);
+      this.tasks.push(response.data);
+    } catch (error) {
+      console.error("createTasks:", error);
+    }
   };
-  taskDelete = (taskId) => {
-    const shownTasks = this.tasks.filter((task) => task.id !== taskId);
-    this.tasks = shownTasks;
+  taskDelete = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:7000/${taskId}`);
+      const shownTasks = this.tasks.filter((task) => task.id !== taskId);
+      this.tasks = shownTasks;
+    } catch (error) {
+      console.error("deleteTasks:", error);
+    }
   };
-  taskUnfinished = (taskId) => {
-    const unfinishedTasks = this.tasks.filter((task) => task.id !== taskId);
-    this.tasks = unfinishedTasks;
-  };
-  taskFinished = (finishId) => {
-    const finishedTasks = this.tasks.filter((task) => task.id === finishId);
-    this.finished = finishedTasks;
+
+  filtered = () => {
+    const filterList = this.tasks.filter((task) => task.finished === false);
+    return filterList;
   };
 }
 const todoStore = new TodoStore();
