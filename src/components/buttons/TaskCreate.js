@@ -3,7 +3,10 @@ import { useState } from "react";
 const TaskCreate = () => {
   const [task, setTask] = useState({ name: "", finished: false });
   const handleChange = (event) => {
-    setTask({ ...task, [event.target.name]: event.target.value });
+    setTask({
+      ...task,
+      [event.target.name]: event.target.value,
+    });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
